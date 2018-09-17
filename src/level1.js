@@ -24,10 +24,21 @@ export default class Level1 extends Phaser.Scene {
 
 	preload() {
 		// Load images
-		this.load.spritesheet('Player', 'https://i.imgur.com/k4SlN9a.png', {
-			frameWidth: 24,
-			frameHeight: 30
-		})
+		// Player Idle
+		this.load.image('PlayerIdle1', '../assets/player/idle/idle_1.png')
+		this.load.image('PlayerIdle2', '../assets/player/idle/idle_2.png')
+		this.load.image('PlayerIdle3', '../assets/player/idle/idle_3.png')
+		this.load.image('PlayerIdle4', '../assets/player/idle/idle_4.png')
+		// Player Walk
+		this.load.image('PlayerWalk1', '../assets/player/walk/run_1.png')
+		this.load.image('PlayerWalk2', '../assets/player/walk/run_2.png')
+		this.load.image('PlayerWalk3', '../assets/player/walk/run_3.png')
+		this.load.image('PlayerWalk4', '../assets/player/walk/run_4.png')
+		// Player Jump
+		this.load.image('PlayerJump1', '../assets/player/jump/jump_1.png')
+		this.load.image('PlayerJump2', '../assets/player/jump/jump_2.png')
+		this.load.image('PlayerJump3', '../assets/player/jump/jump_3.png')
+
 		this.load.image('Asset', 'https://i.imgur.com/jdqWEYB.png')
 		this.load.image('Sky', 'https://i.imgur.com/fhFpcKN.png')
 		this.load.image('Grass', 'https://i.imgur.com/rGPlCE8.png')

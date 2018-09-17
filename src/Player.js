@@ -3,59 +3,40 @@ import Phaser from 'phaser'
 export default class Player {
 	constructor(fromScene) {
 		// Player Animations
+
 		fromScene.anims.create({
-			key: 'left',
-			frames: fromScene.anims.generateFrameNumbers('Player', {
-				start: 0,
-				end: 2
-			}),
+			key: 'right-left',
+			frames: [
+				{ key: 'PlayerWalk1' },
+				{ key: 'PlayerWalk2' },
+				{ key: 'PlayerWalk3' },
+				{ key: 'PlayerWalk4' }
+			],
 			frameRate: 10,
 			repeat: -1
 		})
 
 		fromScene.anims.create({
-			key: 'turn',
+			key: 'jump',
 			frames: [
-				{
-					key: 'Player',
-					frame: 8
-				}
+				{ key: 'PlayerJump1' },
+				{ key: 'PlayerJump2' },
+				{ key: 'PlayerJump3' }
 			],
-			frameRate: 20
-		})
-
-		fromScene.anims.create({
-			key: 'right',
-			frames: fromScene.anims.generateFrameNumbers('Player', {
-				start: 4,
-				end: 6
-			}),
 			frameRate: 10,
 			repeat: -1
 		})
 
 		fromScene.anims.create({
-			key: 'up',
+			key: 'idle',
 			frames: [
-				{
-					key: 'Player',
-					frame: 9
-				}
+				{ key: 'PlayerIdle1' },
+				{ key: 'PlayerIdle2' },
+				{ key: 'PlayerIdle3' },
+				{ key: 'PlayerIdle4' }
 			],
-			frameRate: 1,
-			repeat: 10
-		})
-
-		fromScene.anims.create({
-			key: 'rightJump',
-			frames: [
-				{
-					key: 'Player',
-					frame: 3
-				}
-			],
-			frameRate: 1,
-			repeat: 10
+			frameRate: 4,
+			repeat: -1
 		})
 
 		// Player settings
@@ -86,18 +67,18 @@ export default class Player {
 		if (this.keys.left.isDown || this.keys.a.isDown) {
 			this.sprite.setVelocityX(-leftRightVelocity)
 			this.sprite.setFlipX(true)
-			this.sprite.anims.play('left', true)
+			this.sprite.anims.play('right-left', true)
 
 			// Right. Move character. Play animation
 		} else if (this.keys.right.isDown || this.keys.d.isDown) {
 			this.sprite.setVelocityX(leftRightVelocity)
 			this.sprite.setFlipX(false)
-			this.sprite.anims.play('right', true)
+			this.sprite.anims.play('right-left', true)
 
 			// Stop. If no movement
 		} else {
 			this.sprite.setVelocityX(0)
-			this.sprite.anims.play('turn')
+			this.sprite.anims.play('idle', true)
 		}
 
 		// Jump
@@ -106,10 +87,7 @@ export default class Player {
 			this.sprite.body.onFloor()
 		) {
 			this.sprite.setVelocityY(jumpStrength)
-			this.sprite.anims.play('up')
-			if (this.keys.right.isDown) {
-				this.sprite.anims.play('rightJump')
-			}
+			this.sprite.anims.play('jump', true)
 		}
 	}
 	destroy() {
