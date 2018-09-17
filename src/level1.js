@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import Player from './Player.js'
+import Preloader from './Preloader.js'
 
 export default class Level1 extends Phaser.Scene {
 	constructor() {
@@ -23,6 +24,8 @@ export default class Level1 extends Phaser.Scene {
 	}
 
 	preload() {
+		let preloader = new Preloader(this)
+		preloader.preload()
 		// Load images
 		// Player Idle
 		this.load.image('PlayerIdle1', '../assets/player/idle/idle_1.png')

@@ -2,8 +2,8 @@ import Phaser from 'phaser'
 
 export default class Player {
 	constructor(fromScene) {
+		this.scene = fromScene
 		// Player Animations
-
 		fromScene.anims.create({
 			key: 'right-left',
 			frames: [
