@@ -1,22 +1,15 @@
 import Phaser from 'phaser'
 import Player from './Player.js'
 import Preloader from './Preloader.js'
+import Monster from './Monster.js'
 
 export default class Level1 extends Phaser.Scene {
 	constructor() {
 		super({
 			key: 'Level1'
 		})
-		this.platforms = null
-		this.player = null
-		this.cursors = null
-		this.layer = null
-		this.coinLayer = null
 		this.score = 0
-		this.text = null
-		this.badguy = null
-		this.enemyMaxY = 530
-		this.enemyMinY = 500 // The bottem layer = 568
+		this.text = ''
 		this.isPlayerAlive = null
 
 		// DEBUGGING
@@ -100,30 +93,11 @@ export default class Level1 extends Phaser.Scene {
 		// Kill if you fall in hole or touch anything black (Tile 39)
 		worldLayer.setTileIndexCallback(39, this.gameOver, this)
 
-		// Bad Guys. Repeat will add more. 1 in at the moment
-		this.badguy = this.add.group({
-			key: 'badguy',
-			repeat: 0,
-			setXY: {
-				x: 1253,
-				y: 568,
-				stepX: 80,
-				stepY: 20
-			}
-		})
-		//Sets monster speed
-		Phaser.Actions.Call(
-			this.badguy.getChildren(),
-			function(enemy) {
-				enemy.speed = Math.random() * 2 + 1
-			},
-			this
-		)
-		// Scale the monster
-		Phaser.Actions.ScaleXY(this.badguy.getChildren(), -0.5, -0.5)
+		// Create monster
+		this.monster = new Monster(this, 530, 500)
+		this.monster.create()
 
 		//Ending Variables
-
 		// Player is alive
 		this.isPlayerAlive = true
 		// reset camera effects
@@ -146,29 +120,7 @@ export default class Level1 extends Phaser.Scene {
 		if (!this.isPlayerAlive) return
 
 		this.player.update()
-
-		// Bad guys
-		let enemies = this.badguy.getChildren()
-		let numEnemies = enemies.length
-		for (let i = 0; i < numEnemies; i++) {
-			// move enemies
-			enemies[i].y += enemies[i].speed
-			if (enemies[i].y >= this.enemyMaxY && enemies[i].speed > 0) {
-				enemies[i].speed *= -1
-			} else if (enemies[i].y <= this.enemyMinY && enemies[i].speed < 0) {
-				enemies[i].speed *= -1
-			}
-			// If you hit the enemy, you die
-			if (
-				Phaser.Geom.Intersects.RectangleToRectangle(
-					this.player.sprite.getBounds(),
-					enemies[i].getBounds()
-				)
-			) {
-				this.gameOver()
-				break
-			}
-		}
+		this.monster.update()
 	}
 
 	// Coin collection function
