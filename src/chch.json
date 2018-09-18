@@ -66,8 +66,66 @@
          "width":200,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "name":"EventTrigger",
+         "objects":[
+                {
+                 "height":0,
+                 "id":3,
+                 "name":"Event1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":408.5,
+                 "y":531
+                }, 
+                {
+                 "height":0,
+                 "id":5,
+                 "name":"Event2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":891,
+                 "y":531.5
+                }, 
+                {
+                 "height":0,
+                 "id":6,
+                 "name":"Event3",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1403,
+                 "y":530.5
+                }, 
+                {
+                 "height":0,
+                 "id":7,
+                 "name":"Event4",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2693,
+                 "y":532
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.6",
