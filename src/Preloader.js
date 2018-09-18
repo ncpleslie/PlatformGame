@@ -55,24 +55,5 @@ export default class Preloader {
 			loadingText.destroy()
 			percentText.destroy()
 		})
-
-		// Load images
-		this.scene.load.image('Asset', 'https://i.imgur.com/jdqWEYB.png')
-		this.scene.load.image('Sky', 'https://i.imgur.com/fhFpcKN.png')
-		this.scene.load.image('Grass', 'https://i.imgur.com/rGPlCE8.png')
-		this.scene.load.image('tiles', 'https://i.imgur.com/JZKNeJO.png')
-		this.scene.load.spritesheet(
-			'badguy',
-			'https://i.imgur.com/HKgScVP.png',
-			{
-				frameWidth: 42,
-				frameHeight: 32
-			}
-		)
-		// Load tile map locations
-		this.scene.load.tilemapTiledJSON(
-			'map',
-			'https://raw.githubusercontent.com/ncpleslie/SoftEngAssignment2/master/fork/scenes/level1.json'
-		)
 	}
 }

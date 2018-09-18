@@ -20,6 +20,8 @@ export default class Level1 extends Phaser.Scene {
 		let preloader = new Preloader(this)
 		preloader.preload()
 		// Load images
+
+		// Player Specific Preload
 		// Player Idle
 		this.load.image('PlayerIdle1', '../assets/player/idle/idle_1.png')
 		this.load.image('PlayerIdle2', '../assets/player/idle/idle_2.png')
@@ -35,19 +37,15 @@ export default class Level1 extends Phaser.Scene {
 		this.load.image('PlayerJump2', '../assets/player/jump/jump_2.png')
 		this.load.image('PlayerJump3', '../assets/player/jump/jump_3.png')
 
-		this.load.image('Asset', 'https://i.imgur.com/jdqWEYB.png')
-		this.load.image('Sky', 'https://i.imgur.com/fhFpcKN.png')
-		this.load.image('Grass', 'https://i.imgur.com/rGPlCE8.png')
-		this.load.image('tiles', 'https://i.imgur.com/JZKNeJO.png')
+		// Level Specific Preload
+		this.load.image('Hills', '../assets/country-platform-back.png')
+		this.load.image('cityTiles', '../assets/CityTileSet.png')
 		this.load.spritesheet('badguy', 'https://i.imgur.com/HKgScVP.png', {
 			frameWidth: 42,
 			frameHeight: 32
 		})
 		// Load tile map locations
-		this.load.tilemapTiledJSON(
-			'map',
-			'https://raw.githubusercontent.com/ncpleslie/SoftEngAssignment2/master/fork/scenes/level1.json'
-		)
+		this.load.tilemapTiledJSON('map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch.json')
 	}
 
 	create() {
@@ -57,27 +55,36 @@ export default class Level1 extends Phaser.Scene {
 			tileWidth: 16,
 			tileHeight: 16
 		})
-		const tileset = map.addTilesetImage('marioTiles', 'tiles', 16, 16)
-		const aboveLayer = map.createStaticLayer('Background', tileset, 0, 0)
-		const worldLayer = map.createStaticLayer('Platforms', tileset, 0, 0)
-		this.coinLayer = map.createDynamicLayer('Coins', tileset, 0, 0)
+		const tileset = map.addTilesetImage('CityTileSet', 'cityTiles', 16, 16)
+		const tilesetHills = map.addTilesetImage('country-platform-back', 'Hills', 16, 16)
+		const backLayer = map.createStaticLayer('Background3', tilesetHills, 0, 0)
+		const aboveLayer = map.createStaticLayer('Background2', tileset, 0, 0)
+		const aboveLayer2 = map.createStaticLayer('Background1', tileset, 0, 0)
+		const aboveLayer3 = map.createStaticLayer('StreetObjects', tileset, 0, 0)
+		const aboveLayer4 = map.createStaticLayer('StreetObjects2', tileset, 0, 0)
+		const worldLayer = map.createStaticLayer('Platform', tileset, 0, 0)
 
 		this.physics.world.bounds.width = aboveLayer.width
 		this.physics.world.bounds.height = aboveLayer.height
 
+		console.log(worldLayer)
 		// Create the player
 		this.player = new Player(this)
 
 		// Set up player collidors
-		worldLayer.setCollisionByProperty({ collision: true })
+		worldLayer.setCollisionByProperty({collision: true})
 		this.physics.add.collider(this.player.sprite, worldLayer)
 
 		// Camera
 		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 		this.cameras.main.startFollow(this.player.sprite)
 		this.cameras.main.setRoundPixels(false)
+		backLayer.setScrollFactor(1)
+		aboveLayer2.setScrollFactor(0.99)
+		aboveLayer3.setScrollFactor(0.95)
+
 		// This code is disabled. It allows for smooth camera slow-down
-		//  this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
+		// this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
 
 		// Onscreen text. This is showing the score, for now
 		this.text = this.add.text(100, 10, '0', {
@@ -86,16 +93,19 @@ export default class Level1 extends Phaser.Scene {
 		this.text.setScrollFactor(0)
 		this.text.setText(`Level 1  Score: ${this.score}`)
 
-		// Coins. These are collectable. It calls 'this.collectCoin' and clears the screen of that coin
-		this.coinLayer.setTileIndexCallback(11, this.collectCoin, this)
-		this.physics.add.overlap(this.player.sprite, this.coinLayer)
-
 		// Kill if you fall in hole or touch anything black (Tile 39)
 		worldLayer.setTileIndexCallback(39, this.gameOver, this)
 
-		// Create monster
-		this.monster = new Monster(this, 530, 500)
-		this.monster.create()
+		// DISABLED DUE TO NO COINS! Coins. These are collectable. It calls 'this.collectCoin' and clears the screen of that coin
+		// ----------------------------------------------------------------------------------
+		// this.coinLayer = map.createDynamicLayer('Coins', tileset, 0, 0)
+		// this.coinLayer.setTileIndexCallback(11, this.collectCoin, this)
+		// this.physics.add.overlap(this.player.sprite, this.coinLayer)
+
+		// DISABLED DUE TO NO MONSTERS! Create monster
+		// ----------------------------------------------------------------------------------
+		// this.monster = new Monster(this, 530, 500)
+		// this.monster.create()
 
 		//Ending Variables
 		// Player is alive
@@ -120,7 +130,8 @@ export default class Level1 extends Phaser.Scene {
 		if (!this.isPlayerAlive) return
 
 		this.player.update()
-		this.monster.update()
+		// Disabled Monsters
+		// this.monster.update()
 	}
 
 	// Coin collection function
