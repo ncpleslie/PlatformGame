@@ -28,6 +28,12 @@ Iteration 1:
 
 Iteration 2:
 
-- Unfinished
+- Created first level
+- Added background
+- Parallax background
+- Event triggers (Text Popups) when hitting objects
+- Plan for the direction of the game
+    - The wizard goes around rebuilding the city after the earthquake
+ - Added storyline() and earthquake() functions
 
 
