@@ -20,8 +20,11 @@ export default class Level1 extends Phaser.Scene {
 		let preloader = new Preloader(this)
 		preloader.preload()
 		// Load images
+<<<<<<< HEAD
 
 		// Player Specific Preload
+=======
+>>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 		// Player Idle
 		this.load.image('PlayerIdle1', '../assets/player/idle/idle_1.png')
 		this.load.image('PlayerIdle2', '../assets/player/idle/idle_2.png')
@@ -37,15 +40,29 @@ export default class Level1 extends Phaser.Scene {
 		this.load.image('PlayerJump2', '../assets/player/jump/jump_2.png')
 		this.load.image('PlayerJump3', '../assets/player/jump/jump_3.png')
 
+<<<<<<< HEAD
 		// Level Specific Preload
 		this.load.image('Hills', '../assets/country-platform-back.png')
 		this.load.image('cityTiles', '../assets/CityTileSet.png')
+=======
+		this.load.image('Asset', 'https://i.imgur.com/jdqWEYB.png')
+		this.load.image('Sky', 'https://i.imgur.com/fhFpcKN.png')
+		this.load.image('Grass', 'https://i.imgur.com/rGPlCE8.png')
+		this.load.image('tiles', 'https://i.imgur.com/JZKNeJO.png')
+>>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 		this.load.spritesheet('badguy', 'https://i.imgur.com/HKgScVP.png', {
 			frameWidth: 42,
 			frameHeight: 32
 		})
 		// Load tile map locations
+<<<<<<< HEAD
 		this.load.tilemapTiledJSON('map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch.json')
+=======
+		this.load.tilemapTiledJSON(
+			'map',
+			'https://raw.githubusercontent.com/ncpleslie/SoftEngAssignment2/master/fork/scenes/level1.json'
+		)
+>>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 	}
 
 	create() {
@@ -55,6 +72,7 @@ export default class Level1 extends Phaser.Scene {
 			tileWidth: 16,
 			tileHeight: 16
 		})
+<<<<<<< HEAD
 		const tileset = map.addTilesetImage('CityTileSet', 'cityTiles', 16, 16)
 		const tilesetHills = map.addTilesetImage('country-platform-back', 'Hills', 16, 16)
 		const backLayer = map.createStaticLayer('Background3', tilesetHills, 0, 0)
@@ -66,17 +84,33 @@ export default class Level1 extends Phaser.Scene {
 
 		this.physics.world.bounds.width = backLayer.width
 		this.physics.world.bounds.height = backLayer.height
+=======
+		const tileset = map.addTilesetImage('marioTiles', 'tiles', 16, 16)
+		const aboveLayer = map.createStaticLayer('Background', tileset, 0, 0)
+		const worldLayer = map.createStaticLayer('Platforms', tileset, 0, 0)
+		this.coinLayer = map.createDynamicLayer('Coins', tileset, 0, 0)
+
+		this.physics.world.bounds.width = aboveLayer.width
+		this.physics.world.bounds.height = aboveLayer.height
+
+>>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 		// Create the player
 		this.player = new Player(this)
 
 		// Set up player collidors
+<<<<<<< HEAD
 		platform.setCollisionByProperty({collision: true})
 		this.physics.add.collider(this.player.sprite, platform)
+=======
+		worldLayer.setCollisionByProperty({ collision: true })
+		this.physics.add.collider(this.player.sprite, worldLayer)
+>>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 
 		// Camera
 		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 		this.cameras.main.startFollow(this.player.sprite)
 		this.cameras.main.setRoundPixels(false)
+<<<<<<< HEAD
 		backLayer.setScrollFactor(1)
 		cityLayer1.setScrollFactor(0.99)
 		cityLayer2.setScrollFactor(0.95)
@@ -84,6 +118,10 @@ export default class Level1 extends Phaser.Scene {
 		streetObject2.setScrollFactor(1)
 		// This code is disabled. It allows for smooth camera slow-down
 		// this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
+=======
+		// This code is disabled. It allows for smooth camera slow-down
+		//  this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
+>>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 
 		// Onscreen text. This is showing the score, for now
 		this.text = this.add.text(100, 10, '0', {
@@ -92,6 +130,7 @@ export default class Level1 extends Phaser.Scene {
 		this.text.setScrollFactor(0)
 		this.text.setText(`Level 1  Score: ${this.score}`)
 
+<<<<<<< HEAD
 		// Kill if you fall in hole or touch anything black (Tile 39)
 		platform.setTileIndexCallback(39, this.gameOver, this)
 
@@ -105,6 +144,18 @@ export default class Level1 extends Phaser.Scene {
 		// ----------------------------------------------------------------------------------
 		// this.monster = new Monster(this, 530, 500)
 		// this.monster.create()
+=======
+		// Coins. These are collectable. It calls 'this.collectCoin' and clears the screen of that coin
+		this.coinLayer.setTileIndexCallback(11, this.collectCoin, this)
+		this.physics.add.overlap(this.player.sprite, this.coinLayer)
+
+		// Kill if you fall in hole or touch anything black (Tile 39)
+		worldLayer.setTileIndexCallback(39, this.gameOver, this)
+
+		// Create monster
+		this.monster = new Monster(this, 530, 500)
+		this.monster.create()
+>>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 
 		//Ending Variables
 		// Player is alive
@@ -116,7 +167,11 @@ export default class Level1 extends Phaser.Scene {
 		if (this.debugging === true) {
 			// Used for debugging. Will show colliding objects in new colour
 			const debugGraphics = this.add.graphics().setAlpha(0.75)
+<<<<<<< HEAD
 			platform.renderDebug(debugGraphics, {
+=======
+			worldLayer.renderDebug(debugGraphics, {
+>>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 				tileColor: null, // Color of non-colliding tiles
 				collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
 				faceColor: new Phaser.Display.Color(40, 39, 37, 255)
@@ -129,8 +184,12 @@ export default class Level1 extends Phaser.Scene {
 		if (!this.isPlayerAlive) return
 
 		this.player.update()
+<<<<<<< HEAD
 		// Disabled Monsters
 		// this.monster.update()
+=======
+		this.monster.update()
+>>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 	}
 
 	// Coin collection function
