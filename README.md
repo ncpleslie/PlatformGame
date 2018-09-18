@@ -21,19 +21,19 @@ https://github.com/ncpleslie/SoftEngAssignment2/fork/
 
 
 
-Iteration 1:
+Iteration 1: https://codepen.io/ncpleslie/project/editor/DKrmbe
 
 - Recreate the Eloquent JS game in Phaser 3
 
 
-Iteration 2:
+Iteration 2: https://codesandbox.io/s/q8l58q4v8q
 
 - Code refactoring/decomposition
     - Now things are broken up. Monster in monster class. Player is player class, etc
 - Added preloading screen
 
 
-Iteration 3:
+Iteration 3: https://codesandbox.io/s/6486xq6q43
 
 - Created first level
 - Added background
