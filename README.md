@@ -28,6 +28,13 @@ Iteration 1:
 
 Iteration 2:
 
+- Code refactoring/decomposition
+    - Now things are broken up. Monster in monster class. Player is player class, etc
+- Added preloading screen
+
+
+Iteration 3:
+
 - Created first level
 - Added background
 - Parallax background
