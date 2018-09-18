@@ -11,6 +11,7 @@ export default class Level1 extends Phaser.Scene {
 		this.score = 0
 		this.text = ''
 		this.isPlayerAlive = null
+		this.counter = 0
 
 		// DEBUGGING
 		this.debugging = false
@@ -20,11 +21,8 @@ export default class Level1 extends Phaser.Scene {
 		let preloader = new Preloader(this)
 		preloader.preload()
 		// Load images
-<<<<<<< HEAD
 
 		// Player Specific Preload
-=======
->>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 		// Player Idle
 		this.load.image('PlayerIdle1', '../assets/player/idle/idle_1.png')
 		this.load.image('PlayerIdle2', '../assets/player/idle/idle_2.png')
@@ -40,29 +38,15 @@ export default class Level1 extends Phaser.Scene {
 		this.load.image('PlayerJump2', '../assets/player/jump/jump_2.png')
 		this.load.image('PlayerJump3', '../assets/player/jump/jump_3.png')
 
-<<<<<<< HEAD
 		// Level Specific Preload
 		this.load.image('Hills', '../assets/country-platform-back.png')
 		this.load.image('cityTiles', '../assets/CityTileSet.png')
-=======
-		this.load.image('Asset', 'https://i.imgur.com/jdqWEYB.png')
-		this.load.image('Sky', 'https://i.imgur.com/fhFpcKN.png')
-		this.load.image('Grass', 'https://i.imgur.com/rGPlCE8.png')
-		this.load.image('tiles', 'https://i.imgur.com/JZKNeJO.png')
->>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 		this.load.spritesheet('badguy', 'https://i.imgur.com/HKgScVP.png', {
 			frameWidth: 42,
 			frameHeight: 32
 		})
 		// Load tile map locations
-<<<<<<< HEAD
 		this.load.tilemapTiledJSON('map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch.json')
-=======
-		this.load.tilemapTiledJSON(
-			'map',
-			'https://raw.githubusercontent.com/ncpleslie/SoftEngAssignment2/master/fork/scenes/level1.json'
-		)
->>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 	}
 
 	create() {
@@ -72,45 +56,28 @@ export default class Level1 extends Phaser.Scene {
 			tileWidth: 16,
 			tileHeight: 16
 		})
-<<<<<<< HEAD
 		const tileset = map.addTilesetImage('CityTileSet', 'cityTiles', 16, 16)
 		const tilesetHills = map.addTilesetImage('country-platform-back', 'Hills', 16, 16)
 		const backLayer = map.createStaticLayer('Background3', tilesetHills, 0, 0)
 		const cityLayer2 = map.createStaticLayer('Background2', tileset, 0, 0)
 		const cityLayer1 = map.createStaticLayer('Background1', tileset, 0, 0)
+		this.player = new Player(this)
 		const streetObject1 = map.createStaticLayer('StreetObjects', tileset, 0, 0)
 		const streetObject2 = map.createStaticLayer('StreetObjects2', tileset, 0, 0)
 		const platform = map.createStaticLayer('Platform', tileset, 0, 0)
 
 		this.physics.world.bounds.width = backLayer.width
 		this.physics.world.bounds.height = backLayer.height
-=======
-		const tileset = map.addTilesetImage('marioTiles', 'tiles', 16, 16)
-		const aboveLayer = map.createStaticLayer('Background', tileset, 0, 0)
-		const worldLayer = map.createStaticLayer('Platforms', tileset, 0, 0)
-		this.coinLayer = map.createDynamicLayer('Coins', tileset, 0, 0)
-
-		this.physics.world.bounds.width = aboveLayer.width
-		this.physics.world.bounds.height = aboveLayer.height
-
->>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 		// Create the player
-		this.player = new Player(this)
 
 		// Set up player collidors
-<<<<<<< HEAD
 		platform.setCollisionByProperty({collision: true})
 		this.physics.add.collider(this.player.sprite, platform)
-=======
-		worldLayer.setCollisionByProperty({ collision: true })
-		this.physics.add.collider(this.player.sprite, worldLayer)
->>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 
 		// Camera
 		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 		this.cameras.main.startFollow(this.player.sprite)
 		this.cameras.main.setRoundPixels(false)
-<<<<<<< HEAD
 		backLayer.setScrollFactor(1)
 		cityLayer1.setScrollFactor(0.99)
 		cityLayer2.setScrollFactor(0.95)
@@ -118,10 +85,6 @@ export default class Level1 extends Phaser.Scene {
 		streetObject2.setScrollFactor(1)
 		// This code is disabled. It allows for smooth camera slow-down
 		// this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
-=======
-		// This code is disabled. It allows for smooth camera slow-down
-		//  this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
->>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 
 		// Onscreen text. This is showing the score, for now
 		this.text = this.add.text(100, 10, '0', {
@@ -130,7 +93,12 @@ export default class Level1 extends Phaser.Scene {
 		this.text.setScrollFactor(0)
 		this.text.setText(`Level 1  Score: ${this.score}`)
 
-<<<<<<< HEAD
+		// Event Triggers - Storyline
+		this.event1 = map.findObject('EventTrigger', obj => obj.name === 'Event1')
+		this.event2 = map.findObject('EventTrigger', obj => obj.name === 'Event2')
+		this.event3 = map.findObject('EventTrigger', obj => obj.name === 'Event3')
+		this.event4 = map.findObject('EventTrigger', obj => obj.name === 'Event4')
+
 		// Kill if you fall in hole or touch anything black (Tile 39)
 		platform.setTileIndexCallback(39, this.gameOver, this)
 
@@ -144,18 +112,6 @@ export default class Level1 extends Phaser.Scene {
 		// ----------------------------------------------------------------------------------
 		// this.monster = new Monster(this, 530, 500)
 		// this.monster.create()
-=======
-		// Coins. These are collectable. It calls 'this.collectCoin' and clears the screen of that coin
-		this.coinLayer.setTileIndexCallback(11, this.collectCoin, this)
-		this.physics.add.overlap(this.player.sprite, this.coinLayer)
-
-		// Kill if you fall in hole or touch anything black (Tile 39)
-		worldLayer.setTileIndexCallback(39, this.gameOver, this)
-
-		// Create monster
-		this.monster = new Monster(this, 530, 500)
-		this.monster.create()
->>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 
 		//Ending Variables
 		// Player is alive
@@ -167,11 +123,7 @@ export default class Level1 extends Phaser.Scene {
 		if (this.debugging === true) {
 			// Used for debugging. Will show colliding objects in new colour
 			const debugGraphics = this.add.graphics().setAlpha(0.75)
-<<<<<<< HEAD
 			platform.renderDebug(debugGraphics, {
-=======
-			worldLayer.renderDebug(debugGraphics, {
->>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
 				tileColor: null, // Color of non-colliding tiles
 				collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
 				faceColor: new Phaser.Display.Color(40, 39, 37, 255)
@@ -184,12 +136,11 @@ export default class Level1 extends Phaser.Scene {
 		if (!this.isPlayerAlive) return
 
 		this.player.update()
-<<<<<<< HEAD
 		// Disabled Monsters
 		// this.monster.update()
-=======
-		this.monster.update()
->>>>>>> 5e72e61131362bf1e55e97ca9f319eaec7fabf53
+
+		// Storyline triggers
+		this.storyLine()
 	}
 
 	// Coin collection function
@@ -230,6 +181,83 @@ export default class Level1 extends Phaser.Scene {
 			500,
 			function() {
 				this.scene.restart()
+			},
+			[],
+			this
+		)
+	}
+	// Story elements.
+	storyLine() {
+		const storylineText = {
+			story1: `This is you.
+			You're first name is "The". You're last name is "Wizard"... 
+			Seriously. 
+			Look it up. 
+			You're called "The Wizard"`,
+			story2: `You're Christchurch's only Wizard
+			A true protector of the citizens`,
+			story3: `You've lived here your entire life
+			You call Christchurch your home
+			You'd do anything for it`,
+			story4: `But one day
+			Everything changed...`
+		}
+		if (this.player.sprite.x >= this.event1.x && this.counter === 0) {
+			this.counter++
+			this.storyText = this.add
+				.text(400, 300, '', {
+					font: '18px monospace',
+					fill: '#000000',
+					padding: {x: 10, y: 10},
+					backgroundColor: '#FFFFFF'
+				})
+				.setScrollFactor(0)
+				.setOrigin(0.5, 0.5)
+
+			this.storyText.setText(storylineText.story1)
+		} else if (this.player.sprite.x >= this.event2.x && this.counter === 2) {
+			this.counter++
+			this.storyText.setText(storylineText.story2)
+		} else if (this.player.sprite.x >= this.event3.x && this.counter === 4) {
+			this.counter++
+			this.storyText.setText(storylineText.story3)
+		} else if (this.player.sprite.x >= this.event4.x && this.counter === 6) {
+			this.counter++
+			this.storyText.setText(storylineText.story4)
+			this.earthQuake()
+		} else if (this.player.sprite.x >= this.event2.x - 50 && this.counter === 1) {
+			this.counter++
+			this.storyText.setText(``)
+		} else if (this.player.sprite.x >= this.event3.x - 50 && this.counter === 3) {
+			this.counter++
+			this.storyText.setText(``)
+		} else if (this.player.sprite.x >= this.event4.x - 50 && this.counter === 5) {
+			this.counter++
+			this.storyText.setText(``)
+		}
+	}
+	// An effect to simulate an earthquake, fade=out and call the next level
+	earthQuake() {
+		this.time.delayedCall(
+			2500,
+			function() {
+				this.cameras.main.shake(5000)
+				this.time.delayedCall(
+					2500,
+					function() {
+						this.cameras.main.fade(2500)
+					},
+					[],
+					this
+				)
+				this.time.delayedCall(
+					5000,
+					function() {
+						this.scene.restart()
+					},
+					[],
+					this
+				)
 			},
 			[],
 			this
