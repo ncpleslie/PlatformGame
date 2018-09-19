@@ -35,7 +35,7 @@ Iteration 2: https://codesandbox.io/s/q8l58q4v8q
 - Added preloading screen
 - New player sprite
 
-Iteration 3: https://codesandbox.io/s/6486xq6q43
+Iteration 3: https://codesandbox.io/s/o92v3xy5r9
 
 - Created first level
 - Added background
@@ -44,5 +44,12 @@ Iteration 3: https://codesandbox.io/s/6486xq6q43
 - Plan for the direction of the game
     - The wizard goes around rebuilding the city after the earthquake
  - Added storyline() and earthquake() functions
+ 
+ Iteration 4: https://codesandbox.io/s/6486xq6q43
+ 
+ - Added Main menu
+ - Added Pause function/scene
+ - More to come
+ 
 
 
