@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
 import Player from './Player.js'
 import Preloader from './Preloader.js'
-import Monster from './Monster.js'
 
 export default class Level1 extends Phaser.Scene {
 	constructor() {
@@ -61,6 +60,7 @@ export default class Level1 extends Phaser.Scene {
 		const backLayer = map.createStaticLayer('Background3', tilesetHills, 0, 0)
 		const cityLayer2 = map.createStaticLayer('Background2', tileset, 0, 0)
 		const cityLayer1 = map.createStaticLayer('Background1', tileset, 0, 0)
+		// Create the player - Called here so they appear behind the lamps
 		this.player = new Player(this)
 		const streetObject1 = map.createStaticLayer('StreetObjects', tileset, 0, 0)
 		const streetObject2 = map.createStaticLayer('StreetObjects2', tileset, 0, 0)
@@ -68,7 +68,9 @@ export default class Level1 extends Phaser.Scene {
 
 		this.physics.world.bounds.width = backLayer.width
 		this.physics.world.bounds.height = backLayer.height
-		// Create the player
+
+		// Pause Game
+		this.pauseScene()
 
 		// Set up player collidors
 		platform.setCollisionByProperty({collision: true})
@@ -77,7 +79,7 @@ export default class Level1 extends Phaser.Scene {
 		// Camera
 		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 		this.cameras.main.startFollow(this.player.sprite)
-		this.cameras.main.setRoundPixels(false)
+		this.cameras.main.roundPixels = false
 		backLayer.setScrollFactor(1)
 		cityLayer1.setScrollFactor(0.99)
 		cityLayer2.setScrollFactor(0.95)
@@ -87,11 +89,15 @@ export default class Level1 extends Phaser.Scene {
 		// this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
 
 		// Onscreen text. This is showing the score, for now
-		this.text = this.add.text(100, 10, '0', {
-			fontSize: '16px'
+		this.scoreText = this.add.text(100, 10, '0', {
+			fontSize: '18px',
+			fill: '#000000',
+			padding: {x: 10, y: 10},
+			backgroundColor: '#FFFFFF'
 		})
-		this.text.setScrollFactor(0)
-		this.text.setText(`Level 1  Score: ${this.score}`)
+		this.scoreText.alpha = 0.7
+		this.scoreText.setScrollFactor(0)
+		this.scoreText.setText(`Level 1  Score: ${this.score}`)
 
 		// Event Triggers - Storyline
 		this.event1 = map.findObject('EventTrigger', obj => obj.name === 'Event1')
@@ -202,8 +208,11 @@ export default class Level1 extends Phaser.Scene {
 			story4: `But one day
 			Everything changed...`
 		}
+
+		// Display storyline text. If the player reaches the same X as the objects
+		// that come from the JSON file, it will trigger the story elements to show
 		if (this.player.sprite.x >= this.event1.x && this.counter === 0) {
-			this.counter++
+			// Create story text element
 			this.storyText = this.add
 				.text(400, 300, '', {
 					font: '18px monospace',
@@ -213,7 +222,10 @@ export default class Level1 extends Phaser.Scene {
 				})
 				.setScrollFactor(0)
 				.setOrigin(0.5, 0.5)
-
+			// Change opacity
+			this.storyText.alpha = 0.7
+			// Counter to prevent it from calling this more than once
+			this.counter++
 			this.storyText.setText(storylineText.story1)
 		} else if (this.player.sprite.x >= this.event2.x && this.counter === 2) {
 			this.counter++
@@ -225,6 +237,8 @@ export default class Level1 extends Phaser.Scene {
 			this.counter++
 			this.storyText.setText(storylineText.story4)
 			this.earthQuake()
+
+			// Remove the text from screen
 		} else if (this.player.sprite.x >= this.event2.x - 50 && this.counter === 1) {
 			this.counter++
 			this.storyText.setText(``)
@@ -260,6 +274,35 @@ export default class Level1 extends Phaser.Scene {
 				)
 			},
 			[],
+			this
+		)
+	}
+	pauseScene() {
+		this.pauseText = this.add
+			.text(400, 300, '', {
+				font: '18px monospace',
+				fill: '#000000',
+				padding: {x: 10, y: 10},
+				backgroundColor: '#FFFFFF'
+			})
+			.setScrollFactor(0)
+			.setOrigin(0.5, 0.5)
+
+		this.pauseText.alpha = 0.7
+		// Brings it on top of every other text box
+		this.pauseText.depth = 100
+
+		this.input.keyboard.on(
+			'keyup',
+			function(e) {
+				if (e.key === 'p') {
+					this.scene.pause()
+					this.scene.launch('Pause')
+					this.pauseText.setText('PAUSED')
+				} else {
+					this.pauseText.setText('')
+				}
+			},
 			this
 		)
 	}

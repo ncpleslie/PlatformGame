@@ -1,7 +1,7 @@
 {
-  "name": "PlatformGame-SoftEng1B",
+  "name": "platform-game-v04",
   "version": "0.0.2",
-  "description": "",
+  "description": "This is the new one for you to use, Nick",
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open",

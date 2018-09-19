@@ -39,10 +39,10 @@ export default class Preloader {
 		this.scene.load.on('progress', function(value) {
 			// Loading bar
 			progressBar.clear()
-			progressBar.fillStyle(0xffffff, 1)
+			progressBar.fillStyle(0xaeaeae, 1)
 			progressBar.fillRect(250, 280, 300 * value, 30)
 			// Text percentage
-			percentText.setText(parseInt(value * 100) + '%')
+			percentText.setText(parseInt(value * 100, 10) + '%')
 		})
 
 		this.scene.load.on('fileprogress', function(file) {
