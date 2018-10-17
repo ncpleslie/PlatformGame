@@ -49,6 +49,8 @@ Iteration 3: https://codesandbox.io/s/o92v3xy5r9
  
  - Added Main menu
  - Added Pause function/scene
- - More to come. Perhaps touch controls?
+ - Touch Controls added
+ - Responsive design (Should work on all device sizes)
+ - Refactored storyLine() (Fewer IF statements)
  
 
