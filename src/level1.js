@@ -11,6 +11,11 @@ export default class Level1 extends Phaser.Scene {
 		this.text = ''
 		this.isPlayerAlive = null
 		this.counter = 0
+		this.eventArray = null
+		this.storyText = null
+
+		this.halfWidth = window.innerWidth / 2
+		this.halfHeight = window.innerHeight / 2
 
 		// DEBUGGING
 		this.debugging = false
@@ -20,7 +25,8 @@ export default class Level1 extends Phaser.Scene {
 		let preloader = new Preloader(this)
 		preloader.preload()
 		// Load images
-
+		// Load tile map locations
+		this.load.tilemapTiledJSON('map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch.json')
 		// Player Specific Preload
 		// Player Idle
 		this.load.image('PlayerIdle1', '../assets/player/idle/idle_1.png')
@@ -44,8 +50,10 @@ export default class Level1 extends Phaser.Scene {
 			frameWidth: 42,
 			frameHeight: 32
 		})
-		// Load tile map locations
-		this.load.tilemapTiledJSON('map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch.json')
+
+		// Touch Screen Preload
+		this.load.image('touchArrow', '../assets/player/touch/arrow.png')
+		this.load.image('touchArrowUp', '../assets/player/touch/arrowup.png')
 	}
 
 	create() {
@@ -89,21 +97,24 @@ export default class Level1 extends Phaser.Scene {
 		// this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
 
 		// Onscreen text. This is showing the score, for now
-		this.scoreText = this.add.text(100, 10, '0', {
-			fontSize: '18px',
-			fill: '#000000',
-			padding: {x: 10, y: 10},
-			backgroundColor: '#FFFFFF'
-		})
+		this.scoreText = this.add
+			.text(this.halfWidth, this.halfHeight / 15, '0', {
+				fontSize: '18px',
+				fill: '#000000',
+				padding: {x: 10, y: 10},
+				backgroundColor: '#FFFFFF'
+			})
+			.setOrigin(0.5, 0.5)
+			.setScrollFactor(0)
+			.setText(`Level 1  Score: ${this.score}`)
 		this.scoreText.alpha = 0.7
-		this.scoreText.setScrollFactor(0)
-		this.scoreText.setText(`Level 1  Score: ${this.score}`)
 
 		// Event Triggers - Storyline
 		this.event1 = map.findObject('EventTrigger', obj => obj.name === 'Event1')
 		this.event2 = map.findObject('EventTrigger', obj => obj.name === 'Event2')
 		this.event3 = map.findObject('EventTrigger', obj => obj.name === 'Event3')
 		this.event4 = map.findObject('EventTrigger', obj => obj.name === 'Event4')
+		this.eventArray = [this.event1, this.event2, this.event3, this.event4]
 
 		// Kill if you fall in hole or touch anything black (Tile 39)
 		platform.setTileIndexCallback(39, this.gameOver, this)
@@ -192,62 +203,54 @@ export default class Level1 extends Phaser.Scene {
 			this
 		)
 	}
-	// Story elements.
+
+	// Story elements. Constantly called in update(). Story text is in an array.
+	// As the player progress to a certain point it triggers the text to be displayed
+	// If they continue, the text is removed
 	storyLine() {
-		const storylineText = {
-			story1: `This is you.
-			You're first name is "The". You're last name is "Wizard"... 
-			Seriously. 
-			Look it up. 
-			You're called "The Wizard"`,
-			story2: `You're Christchurch's only Wizard
-			A true protector of the citizens`,
-			story3: `You've lived here your entire life
-			You call Christchurch your home
-			You'd do anything for it`,
-			story4: `But one day
-			Everything changed...`
-		}
+		const storylineTextArray = [
+			`This is you.
+Your first name is "The". Your last name is "Wizard"... 
+Seriously. 
+Look it up. 
+You're called "The Wizard"`,
+			`You're Christchurch's only Wizard
+A true protector of the citizens`,
+			`You've lived here your entire life
+You call Christchurch your home
+You'd do anything for it`,
+			`But one day
+Everything changed...`
+		]
 
-		// Display storyline text. If the player reaches the same X as the objects
-		// that come from the JSON file, it will trigger the story elements to show
-		if (this.player.sprite.x >= this.event1.x && this.counter === 0) {
-			// Create story text element
-			this.storyText = this.add
-				.text(400, 300, '', {
-					font: '18px monospace',
-					fill: '#000000',
-					padding: {x: 10, y: 10},
-					backgroundColor: '#FFFFFF'
-				})
-				.setScrollFactor(0)
-				.setOrigin(0.5, 0.5)
-			// Change opacity
-			this.storyText.alpha = 0.7
-			// Counter to prevent it from calling this more than once
-			this.counter++
-			this.storyText.setText(storylineText.story1)
-		} else if (this.player.sprite.x >= this.event2.x && this.counter === 2) {
-			this.counter++
-			this.storyText.setText(storylineText.story2)
-		} else if (this.player.sprite.x >= this.event3.x && this.counter === 4) {
-			this.counter++
-			this.storyText.setText(storylineText.story3)
-		} else if (this.player.sprite.x >= this.event4.x && this.counter === 6) {
-			this.counter++
-			this.storyText.setText(storylineText.story4)
-			this.earthQuake()
+		const MAX_NUM_COUNTER = 4
 
-			// Remove the text from screen
-		} else if (this.player.sprite.x >= this.event2.x - 50 && this.counter === 1) {
-			this.counter++
-			this.storyText.setText(``)
-		} else if (this.player.sprite.x >= this.event3.x - 50 && this.counter === 3) {
-			this.counter++
-			this.storyText.setText(``)
-		} else if (this.player.sprite.x >= this.event4.x - 50 && this.counter === 5) {
-			this.counter++
-			this.storyText.setText(``)
+		if (this.counter !== MAX_NUM_COUNTER) {
+			if (this.player.sprite.x >= this.eventArray[this.counter].x) {
+				this.storyText = this.add
+					.text(this.halfWidth, this.halfHeight, '', {
+						fill: '#000000',
+						padding: {
+							x: 10,
+							y: 10
+						},
+						backgroundColor: '#FFFFFF'
+					})
+					.setScrollFactor(0)
+					.setOrigin(0.5, 0.5)
+					.setFontSize(`${window.innerWidth / 50}px`)
+				this.storyText.alpha = 0.7
+
+				this.storyText.setText(storylineTextArray[this.counter])
+				this.counter++
+				if (this.counter === MAX_NUM_COUNTER) {
+					this.earthQuake()
+				}
+			} else if (this.player.sprite.x >= this.eventArray[this.counter].x - 50) {
+				if (this.storyText) {
+					this.storyText.setText(null)
+				}
+			}
 		}
 	}
 	// An effect to simulate an earthquake, fade=out and call the next level
@@ -277,9 +280,10 @@ export default class Level1 extends Phaser.Scene {
 			this
 		)
 	}
+
 	pauseScene() {
 		this.pauseText = this.add
-			.text(400, 300, '', {
+			.text(this.halfWidth, this.halfHeight, '', {
 				font: '18px monospace',
 				fill: '#000000',
 				padding: {x: 10, y: 10},

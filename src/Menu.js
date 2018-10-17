@@ -1,12 +1,14 @@
 import Phaser from 'phaser'
-import Player from './Player.js'
 import Preloader from './Preloader.js'
+import {game} from './index.js'
 
 export default class Menu extends Phaser.Scene {
 	constructor() {
 		super({
 			key: 'Menu'
 		})
+		this.height = window.innerHeight
+		this.width = window.innerWidth
 	}
 
 	preload() {
@@ -64,18 +66,18 @@ export default class Menu extends Phaser.Scene {
 
 		// Onscreen text
 		this.title = this.add
-			.text(400, 300, '', {
-				font: '56px monospace',
+			.text(this.width / 2, this.height / 3, '', {
 				fill: '#000000',
 				padding: {x: 10, y: 10},
 				backgroundColor: '#FFFFFF'
 			})
 			.setScrollFactor(0)
 			.setOrigin(0.5, 0.5)
-		this.title.setText(`THE WIZARD SAVES THE TOWN`)
+			.setText(`THE WIZARD SAVES THE CITY`)
+			.setFontSize(`${this.width / 20}px`)
 
 		this.subTitle = this.add
-			.text(400, 400, '', {
+			.text(this.width / 2, this.height / 2, '', {
 				font: '18px monospace',
 				fill: '#000000',
 				padding: {x: 10, y: 10},
@@ -83,14 +85,22 @@ export default class Menu extends Phaser.Scene {
 			})
 			.setScrollFactor(0)
 			.setOrigin(0.5, 0.5)
-		this.subTitle.setText(`Press Any Key To Continue`)
+			.setText(`Press Any Key To Continue`)
+			.setFontSize(`${this.width / 30}px`)
 
-		this.controlsText = this.add.text(16, 16, '', {
-			font: '18px monospace',
-			fill: '#000000',
-			padding: {x: 10, y: 10},
-			backgroundColor: '#FFFFFF'
-		})
+			.setInteractive()
+			.on('pointerdown', () => {
+				this.scene.start('Level1')
+			})
+
+		this.controlsText = this.add
+			.text(this.width / 2, this.height / 8, '', {
+				font: '18px monospace',
+				fill: '#000000',
+				padding: {x: 10, y: 10},
+				backgroundColor: '#FFFFFF'
+			})
+			.setOrigin(0.5, 0.5)
 		this.controlsText.alpha = 0.7
 		this.controlsText.setText(
 			`WASD/Arrows to move & jump

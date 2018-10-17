@@ -5,8 +5,9 @@ import Pause from './Pause.js'
 
 const config = {
 	type: Phaser.AUTO,
-	width: 800,
-	height: 600,
+	width: window.innerWidth,
+	height: window.innerHeight,
+	autoResize: true,
 	resolution: window.devicePixelRatio || 1,
 	parent: 'game-container',
 	pixelArt: true,
@@ -19,4 +20,5 @@ const config = {
 		}
 	}
 }
-const game = new Phaser.Game(config)
+
+var game = new Phaser.Game(config)
