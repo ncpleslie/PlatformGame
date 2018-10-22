@@ -7,12 +7,12 @@ Semester 2
 
 A playable demo can be found: 
 
-
-https://codesandbox.io/s/6486xq6q43
+https://codesandbox.io/s/o9wvznpjny
 
 
 Previous iteration can be found:
 
+https://codesandbox.io/s/6486xq6q43
 
 https://codepen.io/ncpleslie/project/editor/DKrmbe
 
@@ -49,6 +49,10 @@ Iteration 3: https://codesandbox.io/s/o92v3xy5r9
  
  - Added Main menu
  - Added Pause function/scene
- - More to come. Perhaps touch controls?
+ - Touch Controls added
+ - Responsive design (Should work on all device sizes)
+ - Refactored storyLine() (Fewer IF statements)
  
+ Iteration 5: https://codesandbox.io/s/o9wvznpjny
+ - Ideas? More levels
 
