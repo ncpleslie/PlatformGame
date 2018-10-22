@@ -1,7 +1,7 @@
 # Software Engineering 1B
 # Semester Two - Assignment Two
 
-Assignment 2 is to create a platform games using ES6 and JS frameworks
+Assignment 2 is to create a platform game using ES6 and JS frameworks
 
 # About the game
 
@@ -12,7 +12,7 @@ Assignment 2 is to create a platform games using ES6 and JS frameworks
 
 ### Tech
 
-* [Phaser 3](https://github.com/photonstorm/phaser) - AN open source HTML5 game framework that offers WebGL and Canvas rendering across desktop and mobile web browsers.
+* [Phaser 3](https://github.com/photonstorm/phaser) - An open source HTML5 game framework that offers WebGL and Canvas rendering across desktop and mobile web browsers.
 * [Code Sandbox](https://codesandbox.io/) - The online code editor for Web
 
 
