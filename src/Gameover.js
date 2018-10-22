@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
 import Preloader from './Preloader.js'
 
-export default class Menu extends Phaser.Scene {
+export default class Gameover extends Phaser.Scene {
 	constructor() {
 		super({
-			key: 'Menu'
+			key: 'Gameover'
 		})
 		this.height = window.innerHeight
 		this.width = window.innerWidth
@@ -48,7 +48,7 @@ export default class Menu extends Phaser.Scene {
 			})
 			.setScrollFactor(0)
 			.setOrigin(0.5, 0.5)
-			.setText(`THE WIZARD SAVES THE CITY`)
+			.setText(`GAMEOVER`)
 			.setFontSize(`${this.width / 20}px`)
 
 		this.subTitle = this.add
@@ -65,26 +65,12 @@ export default class Menu extends Phaser.Scene {
 
 			.setInteractive()
 			.on('pointerdown', () => {
-				this.scene.start('Level1')
+				this.scene.start('Menu')
 			})
-
-		this.controlsText = this.add
-			.text(this.width / 2, this.height / 8, '', {
-				font: '18px monospace',
-				fill: '#000000',
-				padding: {x: 10, y: 10},
-				backgroundColor: '#FFFFFF'
-			})
-			.setOrigin(0.5, 0.5)
-		this.controlsText.alpha = 0.7
-		this.controlsText.setText(
-			`WASD/Arrows to move & jump
-P to Pause`
-		)
 
 		// Call first level on any key
 		this.input.keyboard.on('keyup', e => {
-			this.scene.start('Level1')
+			this.scene.start('Menu')
 		})
 	}
 }

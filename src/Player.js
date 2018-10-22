@@ -32,6 +32,10 @@ export default class Player {
 			.sprite(100, 450, 'Player', 0)
 			.setBounce(0.2)
 			.setGravityY(1000)
+			.setCollideWorldBounds(true)
+		// this.sprite.body.setSize(new Phaser.Geom.Rectangle(0, 0, 16, 16))
+		//.getConfig()
+		// this.sprite.setHitArea(new Phaser.Geom.Rectangle(0, 0, 128, 128))
 
 		// Set the keyboard controls.
 		const {LEFT, RIGHT, UP, W, A, D} = Phaser.Input.Keyboard.KeyCodes
