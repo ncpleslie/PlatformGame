@@ -10,11 +10,7 @@ Assignment 2 is to create a platform games using ES6 and JS frameworks
   - Collect the coins for extra points and more lives
 
 
-This text you see here is *actually* written in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.
-
 ### Tech
-
-Dillinger uses a number of open source projects to work properly:
 
 * [Phaser 3](https://github.com/photonstorm/phaser) - AN open source HTML5 game framework that offers WebGL and Canvas rendering across desktop and mobile web browsers.
 * [Code Sandbox](https://codesandbox.io/) - The online code editor for Web
