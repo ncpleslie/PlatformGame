@@ -54,5 +54,10 @@ Iteration 3: https://codesandbox.io/s/o92v3xy5r9
  - Refactored storyLine() (Fewer IF statements)
  
  Iteration 5: https://codesandbox.io/s/o9wvznpjny
- - Ideas? More levels
+ 
+ - Level 2 added
+    - Monsters (New sprite)
+    - Collectables (New Sprite)
+    - Lives (With ability to gain more)
+ - Gameover Menu
 
