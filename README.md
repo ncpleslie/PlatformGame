@@ -18,7 +18,7 @@ Assignment 2 is to create a platform game using ES6 and JS frameworks
 
 ### Play
 
-##### Current Version: https://codesandbox.io/s/o9wvznpjny
+##### Play Current Version: https://ooyzxr5mxq.codesandbox.io/
 
 #
 | Iteration | Play the game |
@@ -28,6 +28,7 @@ Assignment 2 is to create a platform game using ES6 and JS frameworks
 | Iteration 3 | https://codesandbox.io/s/o92v3xy5r9 |
 | Iteration 4 | https://codesandbox.io/s/6486xq6q43 |
 | Iteration 5 | https://codesandbox.io/s/o9wvznpjny |
+| Iteration 6 | https://codesandbox.io/s/ooyzxr5mxq |
 
 
 
@@ -69,6 +70,9 @@ Assignment 2 is to create a platform game using ES6 and JS frameworks
 - Lives (With ability to gain more)
 - Gameover Menu
 
+##### Iteration 6:
+
+- Code Refactor
 
 ### Todos
 
