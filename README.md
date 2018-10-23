@@ -76,7 +76,7 @@ Assignment 2 is to create a platform game using ES6 and JS frameworks
 
 ### Todos
 
- - More to come
+- More to come
 
 License
 ----
