@@ -43,7 +43,7 @@ Assignment 2 is to create a platform game using ES6 and JS frameworks
 - Now things are broken up. Monster in monster class. Player is player class, etc
 - Added preloading screen
 - New player sprite
-- 
+
 ##### Iteration 3: 
 
 - Created first level
