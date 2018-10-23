@@ -23,102 +23,46 @@ export default class Level1 extends Phaser.Scene {
 	preload() {
 		let preloader = new Preloader(this)
 		preloader.preload()
-
 		// Load tile map locations
 		this.load.tilemapTiledJSON('map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch.json')
 	}
 
 	create() {
-		// Create the world (Level 1)
-		const map = this.make.tilemap({
-			key: 'map',
-			tileWidth: 16,
-			tileHeight: 16
-		})
-		const tileset = map.addTilesetImage('CityTileSet', 'cityTiles', 16, 16)
-		const tilesetHills = map.addTilesetImage('country-platform-back', 'Hills', 16, 16)
-		const backLayer = map.createStaticLayer('Background3', tilesetHills, 0, 0)
-		const cityLayer2 = map.createStaticLayer('Background2', tileset, 0, 0)
-		const cityLayer1 = map.createStaticLayer('Background1', tileset, 0, 0)
-		// Create the player - Called here so they appear behind the lamps
-		this.player = new Player(this)
-		console.log(this.player)
-		const streetObject1 = map.createStaticLayer('StreetObjects', tileset, 0, 0)
-		const streetObject2 = map.createStaticLayer('StreetObjects2', tileset, 0, 0)
-		const platform = map.createStaticLayer('Platform', tileset, 0, 0)
-
-		this.physics.world.bounds.width = backLayer.width
-		this.physics.world.bounds.height = backLayer.height
-
-		// Pause Game
-		this.pauseScene()
-
-		// Set up player collidors
-		platform.setCollisionByProperty({collision: true})
-		this.physics.add.collider(this.player.sprite, platform)
-
+		// Level Building and add player, and set world bounds
+		this.loadLevelElements()
+		this.setWorldBounds()
+		// Player collision and death
+		this.setPlayerAndWorldCollider()
+		this.setDeathTiles()
 		// Camera
-		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
-		this.cameras.main.startFollow(this.player.sprite)
-		this.cameras.main.roundPixels = false
-		backLayer.setScrollFactor(1)
-		cityLayer1.setScrollFactor(0.99)
-		cityLayer2.setScrollFactor(0.95)
-		streetObject1.setScrollFactor(1)
-		streetObject2.setScrollFactor(1)
-		// This code is disabled. It allows for smooth camera slow-down
-		// this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
-
-		// Onscreen text. This is showing the score, for now
-		this.scoreText = this.add
-			.text(this.halfWidth, this.halfHeight / 15, '0', {
-				fontSize: '18px',
-				fill: '#000000',
-				padding: {x: 10, y: 10},
-				backgroundColor: '#FFFFFF'
-			})
-			.setOrigin(0.5, 0.5)
-			.setScrollFactor(0)
-			.setText(`Level 1  Score: ${this.score}`)
-		this.scoreText.alpha = 0.7
-
-		// Event Triggers - Storyline
-		this.event1 = map.findObject('EventTrigger', obj => obj.name === 'Event1')
-		this.event2 = map.findObject('EventTrigger', obj => obj.name === 'Event2')
-		this.event3 = map.findObject('EventTrigger', obj => obj.name === 'Event3')
-		this.event4 = map.findObject('EventTrigger', obj => obj.name === 'Event4')
-		this.eventArray = [this.event1, this.event2, this.event3, this.event4]
-
-		// Kill if you fall in hole or touch anything black (Tile 39)
-		platform.setTileIndexCallback(39, this.gameOver, this)
+		this.setCameraOptions()
+		this.makeBackgroundAParalax()
+		// UI and other none-game features
+		this.addHUD()
+		this.pauseScene()
+		// Story
+		this.eventTriggers()
 
 		//Ending Variables
+		// ----------------------------------
 		// Player is alive
 		this.isPlayerAlive = true
 		// reset camera effects
 		this.cameras.main.resetFX()
-
-		/* DEBUGGING */
-		if (this.debugging === true) {
-			// Used for debugging. Will show colliding objects in new colour
-			const debugGraphics = this.add.graphics().setAlpha(0.75)
-			platform.renderDebug(debugGraphics, {
-				tileColor: null, // Color of non-colliding tiles
-				collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-				faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-			})
-		}
+		// Load the bounds of the game
+		this.debug()
 	}
 
 	update(time, delta) {
 		//Check if player is alive. If not, why bother even updating
 		if (!this.isPlayerAlive) return
-
 		this.player.update()
-
 		// Storyline triggers
 		this.storyLine()
 	}
+
+	// Everything below this line will affect the game.
+	// ------------------------------------------------------------------------------------
 
 	// Game over. Has some camera functions I'm testing out and seeing what they do
 	gameOver() {
@@ -159,17 +103,17 @@ export default class Level1 extends Phaser.Scene {
 	storyLine() {
 		const storylineTextArray = [
 			`This is you.
-Your first name is "The". Your last name is "Wizard"... 
-Seriously. 
-Look it up. 
-You're called "The Wizard"`,
+				Your first name is "The". Your last name is "Wizard"... 
+				Seriously. 
+				Look it up. 
+				You're called "The Wizard"`,
 			`You're Christchurch's only Wizard
-A true protector of the citizens`,
+				A true protector of the citizens`,
 			`You've lived here your entire life
-You call Christchurch your home
-You'd do anything for it`,
+				You call Christchurch your home
+				You'd do anything for it`,
 			`But one day
-Everything changed...`
+				Everything changed...`
 		]
 
 		const MAX_NUM_COUNTER = 4
@@ -259,5 +203,96 @@ Everything changed...`
 			},
 			this
 		)
+	}
+
+	setPlayerAndWorldCollider() {
+		// Set up player collidors
+		this.platform.setCollisionByProperty({collision: true})
+		this.physics.add.collider(this.player.sprite, this.platform)
+	}
+
+	setWorldBounds() {
+		this.physics.world.bounds.width = this.backLayer.width
+		this.physics.world.bounds.height = this.backLayer.height
+	}
+
+	setDeathTiles() {
+		// Kill if you fall in hole or touch anything black (Tile 39)
+		this.platform.setTileIndexCallback(39, this.gameOver, this)
+	}
+
+	addHUD() {
+		// Onscreen text. This is showing the score, for now
+		this.scoreText = this.add
+			.text(this.halfWidth, this.halfHeight / 15, '0', {
+				fontSize: '18px',
+				fill: '#000000',
+				padding: {x: 10, y: 10},
+				backgroundColor: '#FFFFFF'
+			})
+			.setOrigin(0.5, 0.5)
+			.setScrollFactor(0)
+			.setText(`Level 1  Score: ${this.score}`)
+		this.scoreText.alpha = 0.7
+	}
+
+	eventTriggers() {
+		// Event Triggers - Storyline
+		this.event1 = this.map.findObject('EventTrigger', obj => obj.name === 'Event1')
+		this.event1 = this.map.findObject('EventTrigger', obj => obj.name === 'Event1')
+		this.event2 = this.map.findObject('EventTrigger', obj => obj.name === 'Event2')
+		this.event3 = this.map.findObject('EventTrigger', obj => obj.name === 'Event3')
+		this.event4 = this.map.findObject('EventTrigger', obj => obj.name === 'Event4')
+		this.eventArray = [this.event1, this.event2, this.event3, this.event4]
+	}
+
+	setCameraOptions() {
+		// Camera
+		this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
+		this.cameras.main.startFollow(this.player.sprite)
+		this.cameras.main.roundPixels = false
+	}
+
+	makeBackgroundAParalax() {
+		this.backLayer.setScrollFactor(1)
+		this.cityLayer1.setScrollFactor(0.99)
+		this.cityLayer2.setScrollFactor(0.95)
+		this.streetObject1.setScrollFactor(1)
+		this.streetObject2.setScrollFactor(1)
+		// This code is disabled. It allows for smooth camera slow-down
+		// this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
+	}
+
+	loadLevelElements() {
+		// Create the world (Level 1)
+		this.map = this.make.tilemap({
+			key: 'map',
+			tileWidth: 16,
+			tileHeight: 16
+		})
+		this.tileset = this.map.addTilesetImage('CityTileSet', 'cityTiles', 16, 16)
+		this.tilesetHills = this.map.addTilesetImage('country-platform-back', 'Hills', 16, 16)
+		this.backLayer = this.map.createStaticLayer('Background3', this.tilesetHills, 0, 0)
+		this.cityLayer2 = this.map.createStaticLayer('Background2', this.tileset, 0, 0)
+		this.cityLayer1 = this.map.createStaticLayer('Background1', this.tileset, 0, 0)
+		// Create the player - Called here so they appear behind the lamps
+		this.player = new Player(this)
+		console.log(this.player)
+		this.streetObject1 = this.map.createStaticLayer('StreetObjects', this.tileset, 0, 0)
+		this.streetObject2 = this.map.createStaticLayer('StreetObjects2', this.tileset, 0, 0)
+		this.platform = this.map.createStaticLayer('Platform', this.tileset, 0, 0)
+	}
+
+	debug() {
+		/* DEBUGGING */
+		if (this.debugging === true) {
+			// Used for debugging. Will show colliding objects in new colour
+			const debugGraphics = this.add.graphics().setAlpha(0.75)
+			this.platform.renderDebug(debugGraphics, {
+				tileColor: null, // Color of non-colliding tiles
+				collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+				faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+			})
+		}
 	}
 }

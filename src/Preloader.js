@@ -12,21 +12,24 @@ export default class Preloader {
 		progressBox.fillStyle(0x222222, 0.8)
 		progressBox.fillRect(window.innerWidth / 4, height / 3, window.innerWidth / 2, 50)
 
-		this.scene.load.on('progress', function(value) {
+		this.scene.load.on('progress', value => {
 			// Loading bar
 			progressBar.clear()
 			progressBar.fillStyle(0xaeaeae, 1)
 			progressBar.fillRect(window.innerWidth / 4, height / 3 + 10, (window.innerWidth / 2) * value, 30)
-			// Text percentage
 		})
 
-		this.scene.load.on('fileprogress', function(file) {})
+		this.scene.load.on('fileprogress', file => {})
 
-		this.scene.load.on('complete', function() {
+		this.scene.load.on('complete', () => {
 			progressBar.destroy()
 			progressBox.destroy()
 		})
 
+		this.loadGameElements()
+	}
+
+	loadGameElements() {
 		// Load images
 		// Player Specific Preload
 		// Player Idle

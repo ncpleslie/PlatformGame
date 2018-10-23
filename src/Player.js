@@ -33,9 +33,6 @@ export default class Player {
 			.setBounce(0.2)
 			.setGravityY(1000)
 			.setCollideWorldBounds(true)
-		// this.sprite.body.setSize(new Phaser.Geom.Rectangle(0, 0, 16, 16))
-		//.getConfig()
-		// this.sprite.setHitArea(new Phaser.Geom.Rectangle(0, 0, 128, 128))
 
 		// Set the keyboard controls.
 		const {LEFT, RIGHT, UP, W, A, D} = Phaser.Input.Keyboard.KeyCodes
@@ -60,29 +57,31 @@ export default class Player {
 
 		// Left. Move character. Play animation (Flipped)
 		if (this.keys.left.isDown || this.keys.a.isDown || this.touchControls.leftButtonPressed) {
-			this.sprite.setVelocityX(-leftRightVelocity)
-			this.sprite.setFlipX(true)
-			this.sprite.anims.play('right-left', true)
-
+			this.movementController(-leftRightVelocity, 0, true, 'right-left')
 			// Right. Move character. Play animation
 		} else if (this.keys.right.isDown || this.keys.d.isDown || this.touchControls.rightButtonPressed) {
-			this.sprite.setVelocityX(leftRightVelocity)
-			this.sprite.setFlipX(false)
-			this.sprite.anims.play('right-left', true)
+			this.movementController(leftRightVelocity, 0, false, 'right-left')
 
 			// Stop. If no movement
 		} else {
-			this.sprite.setVelocityX(0)
-			this.sprite.anims.play('idle', true)
+			this.movementController(0, 0, false, 'idle')
 		}
-
 		// Jump
 		if ((this.keys.up.isDown || this.keys.w.isDown || this.touchControls.upButtonPressed) && this.sprite.body.onFloor()) {
-			this.sprite.setVelocityY(jumpStrength)
-			this.sprite.anims.play('jump', true)
+			this.movementController(null, jumpStrength, false, 'jump')
 		}
 	}
+
 	destroy() {
 		this.sprite.destroy()
+	}
+
+	movementController(velocityX, velocityY, flipOnX, animation) {
+		this.sprite.setVelocityX(velocityX)
+		if (velocityY) {
+			this.sprite.setVelocityY(velocityY)
+		}
+		this.sprite.setFlipX(flipOnX)
+		this.sprite.anims.play(animation, true)
 	}
 }

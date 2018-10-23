@@ -19,27 +19,39 @@ export default class Gameover extends Phaser.Scene {
 	}
 
 	create() {
-		// Create the world (Level 1)
-		const map = this.make.tilemap({
+		// Load elements
+		this.loadLevelElements()
+		// Camera
+		this.setCameraOptions()
+		// Onscreen text
+		this.addTextGameOver()
+		this.addTextSubtitle()
+		// Make text a button
+		this.makeSubTitleInteractive()
+		this.continueOnAnyKey()
+	}
+
+	loadLevelElements() {
+		this.map = this.make.tilemap({
 			key: 'map',
 			tileWidth: 16,
 			tileHeight: 16
 		})
-		const tileset = map.addTilesetImage('CityTileSet', 'cityTiles', 16, 16)
-		const tilesetHills = map.addTilesetImage('country-platform-back', 'Hills', 16, 16)
-		map.createStaticLayer('Background3', tilesetHills, 0, 0)
-		map.createStaticLayer('Background2', tileset, 0, 0)
-		map.createStaticLayer('Background1', tileset, 0, 0)
-		map.createStaticLayer('StreetObjects', tileset, 0, 0)
-		map.createStaticLayer('StreetObjects2', tileset, 0, 0)
-		map.createStaticLayer('Platform', tileset, 0, 0)
+		this.tileset = this.map.addTilesetImage('CityTileSet', 'cityTiles', 16, 16)
+		this.tilesetHills = this.map.addTilesetImage('country-platform-back', 'Hills', 16, 16)
+		this.map.createStaticLayer('Background3', this.tilesetHills, 0, 0)
+		this.map.createStaticLayer('Background2', this.tileset, 0, 0)
+		this.map.createStaticLayer('Background1', this.tileset, 0, 0)
+		this.map.createStaticLayer('StreetObjects', this.tileset, 0, 0)
+		this.map.createStaticLayer('StreetObjects2', this.tileset, 0, 0)
+		this.map.createStaticLayer('Platform', this.tileset, 0, 0)
+	}
 
-		// Camera
-		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+	setCameraOptions() {
+		this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
+	}
 
-		// Blur background
-
-		// Onscreen text
+	addTextGameOver() {
 		this.title = this.add
 			.text(this.width / 2, this.height / 3, '', {
 				fill: '#000000',
@@ -50,7 +62,9 @@ export default class Gameover extends Phaser.Scene {
 			.setOrigin(0.5, 0.5)
 			.setText(`GAMEOVER`)
 			.setFontSize(`${this.width / 20}px`)
+	}
 
+	addTextSubtitle() {
 		this.subTitle = this.add
 			.text(this.width / 2, this.height / 2, '', {
 				font: '18px monospace',
@@ -62,12 +76,16 @@ export default class Gameover extends Phaser.Scene {
 			.setOrigin(0.5, 0.5)
 			.setText(`Press Any Key To Continue`)
 			.setFontSize(`${this.width / 30}px`)
+	}
 
-			.setInteractive()
-			.on('pointerdown', () => {
-				this.scene.start('Menu')
-			})
+	makeSubTitleInteractive() {
+		this.subTitle.setInteractive()
+		this.subTitle.on('pointerdown', () => {
+			this.scene.start('Menu')
+		})
+	}
 
+	continueOnAnyKey() {
 		// Call first level on any key
 		this.input.keyboard.on('keyup', e => {
 			this.scene.start('Menu')
