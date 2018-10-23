@@ -53,7 +53,7 @@ Assignment 2 is to create a platform game using ES6 and JS frameworks
 - Plan for the direction of the game
 - The wizard goes around rebuilding the city after the earthquake
 - Added storyline() and earthquake() functions
-- 
+
 ##### Iteration 4:
 
 - Added Main menu
