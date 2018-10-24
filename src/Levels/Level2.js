@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import Player from '../Player.js'
-import Preloader from '../Preloader.js'
 import Monster from '../Monster.js'
+import Audio from '../Audio.js'
 
 export default class Level2 extends Phaser.Scene {
 	constructor() {
@@ -21,14 +21,16 @@ export default class Level2 extends Phaser.Scene {
 	}
 
 	preload() {
-		let preloader = new Preloader(this)
-		preloader.preload()
-
-		// Load tile map locations
-		this.load.tilemapTiledJSON('level2map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch2.json')
+		this.width = this.cameras.main.width
+		this.height = this.cameras.main.height
 	}
 
 	create() {
+		// Audio
+		this.loadAudio()
+		// Stop level 1 song (if playing)
+		this.resetLevels()
+		this.resetAudio()
 		// Level Building and add player, set world bounds
 		this.loadLevelElements()
 		this.setWorldBounds()
@@ -75,6 +77,20 @@ export default class Level2 extends Phaser.Scene {
 		this.loadNextLevel()
 	}
 
+	loadAudio() {
+		this.audioScene = this.scene.get('Audio')
+		this.levelSong = this.audioScene.loadSound('levelSong')
+		this.audioScene.playSound(this.levelSong, true)
+	}
+
+	resetLevels() {
+		this.level1Scene = this.scene.get('Level1')
+	}
+
+	resetAudio() {
+		this.audioScene.playSound(this.level1Scene.level1Song, false)
+	}
+
 	loadNextLevel() {
 		if (this.player.sprite.x >= this.eventObjectArray[this.eventObjectArray.length - 1].x - 20) {
 			this.scene.start('Gameover')
@@ -85,6 +101,8 @@ export default class Level2 extends Phaser.Scene {
 	// This function removes the coin, adds a point to the score.
 	// If enough points then the player gets a new life
 	collectCoin(sprite, tile) {
+		this.coinSound = this.audioScene.loadSound('gotCoin')
+		this.audioScene.playSound(this.coinSound, true)
 		this.coinLayer.removeTileAt(tile.x, tile.y)
 		this.score++
 		this.scoreText.setText(`Level 2  Score: ${this.score} Lives: ${this.lives}`)
@@ -99,61 +117,62 @@ export default class Level2 extends Phaser.Scene {
 
 	// Game over. Has some camera functions I'm testing out and seeing what they do
 	gameOver() {
+		this.dieSound = this.audioScene.loadSound('die')
+		this.audioScene.playSound(this.dieSound, true)
+
 		this.score = 0
 		this.isPlayerAlive = false
 
 		if (this.lives > 0 && this.callPrevention === 0) {
+			this.audioScene.playSound(this.levelSong, false)
 			this.lives--
 			this.callPrevention++
-			// shake the camera
 			this.cameras.main.shake(500)
 			this.player.destroy()
-			// fade camera
-			this.time.delayedCall(
-				250,
-				function() {
-					this.cameras.main.fade(250)
-				},
-				[],
-				this
-			)
-
-			// restart game
-			this.time.delayedCall(
-				500,
-				function() {
-					this.scene.restart()
-				},
-				[],
-				this
-			)
+			this.fadeCamera()
+			this.restartGame()
 		}
+
 		if (this.lives === 0) {
-			// shake the camera
+			this.audioScene.playSound(this.levelSong, false)
 			this.cameras.main.shake(500)
-
 			this.player.destroy()
-
-			// fade camera
-			this.time.delayedCall(
-				250,
-				function() {
-					this.cameras.main.fade(250)
-				},
-				[],
-				this
-			)
-
-			// restart game
-			this.time.delayedCall(
-				500,
-				function() {
-					this.scene.start('Gameover')
-				},
-				[],
-				this
-			)
+			this.fadeCamera()
+			this.gameIsOver()
 		}
+	}
+
+	fadeCamera() {
+		this.time.delayedCall(
+			250,
+			function() {
+				this.cameras.main.fade(250)
+			},
+			[],
+			this
+		)
+	}
+
+	restartGame() {
+		this.time.delayedCall(
+			500,
+			function() {
+				this.scene.restart()
+			},
+			[],
+			this
+		)
+	}
+
+	gameIsOver() {
+		this.time.delayedCall(
+			500,
+			function() {
+				this.scene.start('Gameover')
+			},
+			[],
+			this
+		)
 	}
 
 	// Set points of the map that will kill the player
@@ -167,7 +186,7 @@ export default class Level2 extends Phaser.Scene {
 
 	pauseScene() {
 		this.pauseText = this.add
-			.text(this.halfWidth, this.halfHeight, '', {
+			.text(this.width / 2, this.height / 2, '', {
 				font: '18px monospace',
 				fill: '#000000',
 				padding: {x: 10, y: 10},
@@ -251,7 +270,7 @@ export default class Level2 extends Phaser.Scene {
 	addHUD() {
 		// Onscreen text. This is showing the score, for now
 		this.scoreText = this.add
-			.text(this.halfWidth, this.halfHeight / 15, '0', {
+			.text(this.width / 2, this.height / 2 / 15, '0', {
 				fontSize: '18px',
 				fill: '#000000',
 				padding: {x: 10, y: 10},

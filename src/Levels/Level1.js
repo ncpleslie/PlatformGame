@@ -21,13 +21,13 @@ export default class Level1 extends Phaser.Scene {
 	}
 
 	preload() {
-		let preloader = new Preloader(this)
-		preloader.preload()
-		// Load tile map locations
-		this.load.tilemapTiledJSON('map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch.json')
+		this.width = this.cameras.main.width
+		this.height = this.cameras.main.height
 	}
 
 	create() {
+		// Audio
+		this.loadAudio()
 		// Level Building and add player, and set world bounds
 		this.loadLevelElements()
 		this.setWorldBounds()
@@ -63,9 +63,15 @@ export default class Level1 extends Phaser.Scene {
 
 	// Everything below this line will affect the game.
 	// ------------------------------------------------------------------------------------
+	loadAudio() {
+		this.audioScene = this.scene.get('Audio')
+		this.level1Song = this.audioScene.loadSound('levelSong')
+		this.audioScene.playSound(this.level1Song, true)
+	}
 
 	// Game over. Has some camera functions I'm testing out and seeing what they do
 	gameOver() {
+		this.audioScene.playSound(this.level1Song, false)
 		this.score = 0
 		this.isPlayerAlive = false
 		this.counter = 0
@@ -121,7 +127,7 @@ export default class Level1 extends Phaser.Scene {
 		if (this.counter !== MAX_NUM_COUNTER) {
 			if (this.player.sprite.x >= this.eventArray[this.counter].x) {
 				this.storyText = this.add
-					.text(this.halfWidth, this.halfHeight, '', {
+					.text(this.width / 2, this.height / 2, '', {
 						fill: '#000000',
 						padding: {
 							x: 10,
@@ -131,7 +137,7 @@ export default class Level1 extends Phaser.Scene {
 					})
 					.setScrollFactor(0)
 					.setOrigin(0.5, 0.5)
-					.setFontSize(`${window.innerWidth / 50}px`)
+					.setFontSize(`${this.width / 50}px`)
 				this.storyText.alpha = 0.7
 
 				this.storyText.setText(storylineTextArray[this.counter])
@@ -176,7 +182,7 @@ export default class Level1 extends Phaser.Scene {
 
 	pauseScene() {
 		this.pauseText = this.add
-			.text(this.halfWidth, this.halfHeight, '', {
+			.text(this.width / 2, this.height / 2, '', {
 				font: '18px monospace',
 				fill: '#000000',
 				padding: {x: 10, y: 10},
@@ -224,7 +230,7 @@ export default class Level1 extends Phaser.Scene {
 	addHUD() {
 		// Onscreen text. This is showing the score, for now
 		this.scoreText = this.add
-			.text(this.halfWidth, this.halfHeight / 15, '0', {
+			.text(this.width / 2, this.height / 2 / 15, '0', {
 				fontSize: '18px',
 				fill: '#000000',
 				padding: {x: 10, y: 10},

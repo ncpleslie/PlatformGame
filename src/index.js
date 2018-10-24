@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import Level1 from './Levels/Level1.js'
 import Level2 from './Levels/Level2.js'
 import Menu from './Menu.js'
+import Audio from './Audio.js'
 import Pause from './Pause/Pause.js'
 import Pause2 from './Pause/Pause2.js'
 import Gameover from './Gameover.js'
@@ -15,7 +16,7 @@ const config = {
 	parent: 'game-container',
 	pixelArt: true,
 	backgroundColor: '#FFFFFF',
-	scene: [Menu, Pause, Pause2, Level1, Level2, Gameover],
+	scene: [Menu, Audio, Pause, Pause2, Level1, Level2, Gameover],
 	physics: {
 		default: 'arcade',
 		arcade: {

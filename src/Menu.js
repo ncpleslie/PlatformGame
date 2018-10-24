@@ -6,19 +6,20 @@ export default class Menu extends Phaser.Scene {
 		super({
 			key: 'Menu'
 		})
-		this.height = window.innerHeight
-		this.width = window.innerWidth
+		this.loadLevel = 'Level1'
 	}
 
 	preload() {
+		this.width = this.cameras.main.width
+		this.height = this.cameras.main.height
+
 		let preloader = new Preloader(this)
 		preloader.preload()
-
-		// Load tile map locations
-		this.load.tilemapTiledJSON('map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch.json')
 	}
 
 	create() {
+		// Audio
+		this.loadAudio()
 		// Load elements
 		this.loadLevelElements()
 		// Camera
@@ -30,6 +31,12 @@ export default class Menu extends Phaser.Scene {
 		// Make text a button
 		this.makeSubTitleInteractive()
 		this.continueOnAnyKey()
+	}
+
+	loadAudio() {
+		this.audioScene = this.scene.get('Audio')
+		this.menuSong = this.audioScene.loadSound('menuSong')
+		this.audioScene.playSound(this.menuSong, true)
 	}
 
 	loadLevelElements() {
@@ -101,14 +108,16 @@ P to Pause`
 	makeSubTitleInteractive() {
 		this.subTitle.setInteractive()
 		this.subTitle.on('pointerdown', () => {
-			this.scene.start('Level1')
+			this.scene.start(this.loadLevel)
+			this.audioScene.playSound(this.menuSong, false)
 		})
 	}
 
 	continueOnAnyKey() {
 		// Call first level on any key
 		this.input.keyboard.on('keyup', e => {
-			this.scene.start('Level1')
+			this.scene.start(this.loadLevel)
+			this.audioScene.playSound(this.menuSong, false)
 		})
 	}
 }

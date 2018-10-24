@@ -9,6 +9,8 @@ export default class Touch {
 		this.leftButton = null
 		this.rightButton = null
 		this.upButton = null
+		this.width = this.scene.cameras.main.width
+		this.height = this.scene.cameras.main.height
 	}
 
 	create() {
@@ -24,14 +26,14 @@ export default class Touch {
 			this.leftButton.depth = 100
 
 			this.rightButton = this.scene.add
-				.sprite(window.innerWidth - 100, 565, 'touchArrow')
+				.sprite(this.width - 100, 565, 'touchArrow')
 				.setInteractive()
 				.setScale(0.5)
 				.setScrollFactor(0)
 			this.rightButton.depth = 100
 
 			this.upButton = this.scene.add
-				.sprite(window.innerWidth / 2, 565, 'touchArrowUp')
+				.sprite(this.width / 2, 565, 'touchArrowUp')
 				.setInteractive()
 				.setScale(0.5)
 				.setScrollFactor(0)

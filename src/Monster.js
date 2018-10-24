@@ -19,7 +19,7 @@ export default class Monster {
 			//hitAreaCallback: Phaser.Geom.Rectangle.Contains,
 			setXY: {
 				x: this.enemyMaxX,
-				y: 513,
+				y: 517,
 				stepX: 300,
 				stepY: 0
 			}

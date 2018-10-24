@@ -1,24 +1,22 @@
 import Phaser from 'phaser'
-import Preloader from './Preloader.js'
+import Audio from './Audio.js'
 
 export default class Gameover extends Phaser.Scene {
 	constructor() {
 		super({
 			key: 'Gameover'
 		})
-		this.height = window.innerHeight
-		this.width = window.innerWidth
 	}
 
 	preload() {
-		let preloader = new Preloader(this)
-		preloader.preload()
-
-		// Load tile map locations
-		this.load.tilemapTiledJSON('map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch.json')
+		this.width = this.cameras.main.width
+		this.height = this.cameras.main.height
 	}
 
 	create() {
+		// Reset previous levels states
+		this.resetLevels()
+		this.resetAudio()
 		// Load elements
 		this.loadLevelElements()
 		// Camera
@@ -29,6 +27,18 @@ export default class Gameover extends Phaser.Scene {
 		// Make text a button
 		this.makeSubTitleInteractive()
 		this.continueOnAnyKey()
+	}
+
+	resetLevels() {
+		this.level1Scene = this.scene.get('Level1')
+		this.level2Scene = this.scene.get('Level2')
+		this.level1Scene.counter = 0
+		this.level2Scene.lives = 3
+	}
+
+	resetAudio() {
+		this.audioScene = this.scene.get('Audio')
+		this.audioScene.playSound(this.level2Scene.levelSong, false)
 	}
 
 	loadLevelElements() {

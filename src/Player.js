@@ -3,7 +3,7 @@ import Touch from './Touch.js'
 
 export default class Player {
 	constructor(fromScene) {
-		this.scene = fromScene
+		this.fromScene = fromScene
 		// Player Animations
 		fromScene.anims.create({
 			key: 'right-left',
@@ -33,6 +33,9 @@ export default class Player {
 			.setBounce(0.2)
 			.setGravityY(1000)
 			.setCollideWorldBounds(true)
+			// Reduce hit box size
+			.setSize(24, 20)
+			.setOffset(8, 12)
 
 		// Set the keyboard controls.
 		const {LEFT, RIGHT, UP, W, A, D} = Phaser.Input.Keyboard.KeyCodes
@@ -47,6 +50,8 @@ export default class Player {
 
 		this.touchControls = new Touch(fromScene)
 		this.touchControls.create()
+
+		this.jumpSound = fromScene.sound.add('jump')
 	}
 
 	update() {
@@ -54,21 +59,29 @@ export default class Player {
 		// Player speed variables
 		const leftRightVelocity = 160
 		const jumpStrength = -550
-
 		// Left. Move character. Play animation (Flipped)
 		if (this.keys.left.isDown || this.keys.a.isDown || this.touchControls.leftButtonPressed) {
-			this.movementController(-leftRightVelocity, 0, true, 'right-left')
+			this.sprite.setVelocityX(-leftRightVelocity)
+			this.sprite.setFlipX(true)
+			this.sprite.anims.play('right-left', true)
+
 			// Right. Move character. Play animation
 		} else if (this.keys.right.isDown || this.keys.d.isDown || this.touchControls.rightButtonPressed) {
-			this.movementController(leftRightVelocity, 0, false, 'right-left')
+			this.sprite.setVelocityX(leftRightVelocity)
+			this.sprite.setFlipX(false)
+			this.sprite.anims.play('right-left', true)
 
 			// Stop. If no movement
 		} else {
-			this.movementController(0, 0, false, 'idle')
+			this.sprite.setVelocityX(0)
+			this.sprite.anims.play('idle', true)
 		}
+
 		// Jump
 		if ((this.keys.up.isDown || this.keys.w.isDown || this.touchControls.upButtonPressed) && this.sprite.body.onFloor()) {
-			this.movementController(null, jumpStrength, false, 'jump')
+			this.sprite.setVelocityY(jumpStrength)
+			this.sprite.anims.play('jump', true)
+			this.jumpSound.play()
 		}
 	}
 
@@ -76,6 +89,7 @@ export default class Player {
 		this.sprite.destroy()
 	}
 
+	// No used but can be called in place of functions above
 	movementController(velocityX, velocityY, flipOnX, animation) {
 		this.sprite.setVelocityX(velocityX)
 		if (velocityY) {
