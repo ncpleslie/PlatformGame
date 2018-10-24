@@ -72,12 +72,11 @@ Assignment 2 is to create a platform game using ES6 and JS frameworks
 
 ##### Iteration 6:
 
-- Code Refactor
+- Major Code Refactor
 - Fix hit boxes
+- Sound added
+- Scaling issues fixed
 
-### Todos
-
-- Add sounds
 
 License
 ----
