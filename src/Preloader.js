@@ -58,40 +58,40 @@ export default class Preloader {
 	loadGameElements() {
 		// Player Specific Preload
 		// Player Idle
-		this.scene.load.image('PlayerIdle1', '../assets/player/idle/idle_1.png')
-		this.scene.load.image('PlayerIdle2', '../assets/player/idle/idle_2.png')
-		this.scene.load.image('PlayerIdle3', '../assets/player/idle/idle_3.png')
-		this.scene.load.image('PlayerIdle4', '../assets/player/idle/idle_4.png')
+		this.scene.load.image('PlayerIdle1', 'assets/player/idle/idle_1.png')
+		this.scene.load.image('PlayerIdle2', 'assets/player/idle/idle_2.png')
+		this.scene.load.image('PlayerIdle3', 'assets/player/idle/idle_3.png')
+		this.scene.load.image('PlayerIdle4', 'assets/player/idle/idle_4.png')
 		// Player Walk
-		this.scene.load.image('PlayerWalk1', '../assets/player/walk/run_1.png')
-		this.scene.load.image('PlayerWalk2', '../assets/player/walk/run_2.png')
-		this.scene.load.image('PlayerWalk3', '../assets/player/walk/run_3.png')
-		this.scene.load.image('PlayerWalk4', '../assets/player/walk/run_4.png')
+		this.scene.load.image('PlayerWalk1', 'assets/player/walk/run_1.png')
+		this.scene.load.image('PlayerWalk2', 'assets/player/walk/run_2.png')
+		this.scene.load.image('PlayerWalk3', 'assets/player/walk/run_3.png')
+		this.scene.load.image('PlayerWalk4', 'assets/player/walk/run_4.png')
 		// Player Jump
-		this.scene.load.image('PlayerJump1', '../assets/player/jump/jump_1.png')
-		this.scene.load.image('PlayerJump2', '../assets/player/jump/jump_2.png')
-		this.scene.load.image('PlayerJump3', '../assets/player/jump/jump_3.png')
+		this.scene.load.image('PlayerJump1', 'assets/player/jump/jump_1.png')
+		this.scene.load.image('PlayerJump2', 'assets/player/jump/jump_2.png')
+		this.scene.load.image('PlayerJump3', 'assets/player/jump/jump_3.png')
 		// Level Specific Preload
-		this.scene.load.image('Hills', '../assets/country-platform-back.png')
-		this.scene.load.image('cityTiles', '../assets/CityTileSet.png')
-		this.scene.load.image('boomImage', '../assets/boom3.png')
+		this.scene.load.image('Hills', 'assets/country-platform-back.png')
+		this.scene.load.image('cityTiles', 'assets/CityTileSet.png')
+		this.scene.load.image('boomImage', 'assets/boom3.png')
 		// Level 1
 		this.scene.load.tilemapTiledJSON('map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch.json')
 		// Level 2
 		this.scene.load.tilemapTiledJSON('level2map', 'https://raw.githubusercontent.com/ncpleslie/PlatformGame/master/src/chch2.json')
 		// Monster Sprites
-		this.scene.load.image('badguy', '../assets/monster/zombie-NESW_10-small.png')
-		this.scene.load.image('badguy0', '../assets/monster/zombie0.png')
-		this.scene.load.image('badguy1', '../assets/monster/zombie1.png')
-		this.scene.load.image('badguy2', '../assets/monster/zombie2.png')
+		this.scene.load.image('badguy', 'assets/monster/zombie-NESW_10-small.png')
+		this.scene.load.image('badguy0', 'assets/monster/zombie0.png')
+		this.scene.load.image('badguy1', 'assets/monster/zombie1.png')
+		this.scene.load.image('badguy2', 'assets/monster/zombie2.png')
 		// Touch Screen Preload
-		this.scene.load.image('touchArrow', '../assets/player/touch/arrow.png')
-		this.scene.load.image('touchArrowUp', '../assets/player/touch/arrowup.png')
+		this.scene.load.image('touchArrow', 'assets/player/touch/arrow.png')
+		this.scene.load.image('touchArrowUp', 'assets/player/touch/arrowup.png')
 		// Sound
-		this.scene.load.audio('jump', '../assets/sounds/jump.wav')
-		this.scene.load.audio('gotCoin', '../assets/sounds/gotCoin.mp3')
-		this.scene.load.audio('die', '../assets/sounds/die.mp3')
-		this.scene.load.audio('menuSong', '../assets/sounds/menuSong.mp3')
-		this.scene.load.audio('levelSong', '../assets/sounds/levelSong.mp3')
+		this.scene.load.audio('jump', 'assets/sounds/jump.wav')
+		this.scene.load.audio('gotCoin', 'assets/sounds/gotCoin.mp3')
+		this.scene.load.audio('die', 'assets/sounds/die.mp3')
+		this.scene.load.audio('menuSong', 'assets/sounds/menuSong.mp3')
+		this.scene.load.audio('levelSong', 'assets/sounds/levelSong.mp3')
 	}
 }
