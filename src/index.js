@@ -16,7 +16,7 @@ const config = {
 	parent: 'game-container',
 	pixelArt: true,
 	backgroundColor: '#FFFFFF',
-	scene: [Menu, Audio, Pause, Pause2, Level1, Level2, Gameover],
+	scene: [Menu, Pause, Pause2, Audio, Level1, Level2, Gameover],
 	physics: {
 		default: 'arcade',
 		arcade: {

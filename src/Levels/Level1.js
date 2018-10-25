@@ -283,7 +283,6 @@ export default class Level1 extends Phaser.Scene {
 		this.cityLayer1 = this.map.createStaticLayer('Background1', this.tileset, 0, 0)
 		// Create the player - Called here so they appear behind the lamps
 		this.player = new Player(this)
-		console.log(this.player)
 		this.streetObject1 = this.map.createStaticLayer('StreetObjects', this.tileset, 0, 0)
 		this.streetObject2 = this.map.createStaticLayer('StreetObjects2', this.tileset, 0, 0)
 		this.platform = this.map.createStaticLayer('Platform', this.tileset, 0, 0)
