@@ -18,7 +18,7 @@ Assignment 2 is to create a platform game using ES6 and JS frameworks
 
 ### Play
 
-##### Play Current Version: https://ooyzxr5mxq.codesandbox.io/
+##### Play Current Version: https://ncpleslie.github.io/PlatformGame/
 
 #
 | Iteration | Play the game |
