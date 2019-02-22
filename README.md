@@ -1,7 +1,4 @@
-# Software Engineering 1B
-# Semester Two - Assignment Two
-
-Assignment 2 is to create a platform game using ES6 and JS frameworks
+# PhaserJS 3 Platform Game
 
 # About the game
 
